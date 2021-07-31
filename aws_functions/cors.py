@@ -128,7 +128,7 @@ options_integration_response = client.put_integration_response(
     responseParameters={
         'method.response.header.Access-Control-Allow-Headers': '\'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token\'',
         'method.response.header.Access-Control-Allow-Methods': '\'POST,OPTIONS\'',
-        'method.response.header.Access-Control-Allow-Origin': "'https://" + bucket_name_str + ".s3-us-west-2.amazonaws.com'",
+        'method.response.header.Access-Control-Allow-Origin': "'https://" + bucket_name_str + ".s3.amazonaws.com'",
         'method.response.header.Access-Control-Allow-Credentials': "'true'"
 
     },

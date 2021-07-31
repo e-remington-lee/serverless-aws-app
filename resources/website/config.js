@@ -1,2 +1,2 @@
 var G_API_GW_URL_STR = "https://cyeac92bt6.execute-api.us-east-2.amazonaws.com/test";
-var G_COGNITO_HOSTED_URL_STR = null;
+var G_COGNITO_HOSTED_URL_STR = "https://jaquesb-verify-app.auth.us-east-2.amazoncognito.com/login?client_id=7iheudfghanmkil4k9f4t2asg0&response_type=token&scope=email+openid+profile&redirect_uri=https://erl-2021-07-17-s3site.s3.amazonaws.com/callback.html";
