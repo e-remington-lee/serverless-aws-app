@@ -1,7 +1,7 @@
 import boto3
 import os
-S3API = boto3.client("s3", region_name="us-east-1") 
-bucket_name = "erl-2021-07-17-s3site"
+S3API = boto3.client("s3", region_name="us-east-2") 
+bucket_name = "erl-2021-08-01-s3site"
 # bucket_name = "aws-dragons"
 
 html="text/html"
@@ -32,7 +32,7 @@ for (dirpath, dirnames, filenames) in os.walk(f"{os.getcwd()}/resources/website/
 #     elif f.endswith(".png"):
 #         put_file(f, png)
 
-filename="config.js"
+filename="report.html"
 abs_path = f"{os.getcwd()}/resources/website/{filename}"
 print(filename)
 print(abs_path)

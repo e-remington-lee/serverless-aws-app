@@ -6,8 +6,8 @@
             "Principal": "*",
             "Action": "s3:GetObject",
             "Resource": [
-                "arn:aws:s3:::erl-2021-07-17-s3site/*",
-                "arn:aws:s3:::erl-2021-07-17-s3site"
+                "arn:aws:s3:::erl-2021-08-01-s3site/*",
+                "arn:aws:s3:::erl-2021-08-01-s3site"
             ],
             "Condition": {
                 "IpAddress": {
@@ -22,7 +22,7 @@
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::erl-2021-07-17-s3site/report.html",
+            "Resource": "arn:aws:s3:::erl-2021-08-01-s3site/report.html",
             "Condition": {
                 "StringNotEquals": {
                     "s3:authtype": "REST-QUERY-STRING"
