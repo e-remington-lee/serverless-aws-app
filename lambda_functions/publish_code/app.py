@@ -2,16 +2,17 @@
 import boto3
 import json
 import subprocess
+import os
 
-g_s3 = boto3.client("s3")
-
+g_s3 = boto3.client("s3", region_name="us-east-2")
+g_bucket_name_str = os.environ['REPORT_BUCKET_NAME']
 
 def lambda_handler(event, context):
-    g_bucket_name_str = get_bucket_name()
     g_tag_data_arr = get_tag_data(g_bucket_name_str)
     g_sentiment_data_arr = get_sentiment_data(g_bucket_name_str)
     g_template_str = create_template()
-    g_workable_data_arr = create_workable_data_structure(g_tag_data_arr, g_sentiment_data_arr)
+
+    g_workable_data_arr = create_workable_data_structure(g_tag_data_arr[:len(g_sentiment_data_arr)], g_sentiment_data_arr)
 
     # print(g_sentiment_data_arr)
     # print(g_tag_data_arr)
@@ -22,8 +23,6 @@ def lambda_handler(event, context):
     save_to_s3(g_bucket_name_str, g_template_html)
     return "done"
 
-def get_bucket_name():
-    return g_s3.list_buckets()["Buckets"][0]["Name"]
 
 def get_tag_data(bucket_name_str):
     tag_data = g_s3.get_object(Bucket=bucket_name_str,Key="tag.json")
@@ -57,10 +56,9 @@ def create_template():
 def create_workable_data_structure(g_tag_data_arr, g_sentiment_data_arr):
     final_arr = []
     merged_construct = {}
-    # for i_int in range(0, len(g_tag_data_arr)):
     for i_int in range(len(g_tag_data_arr)):
         print(i_int)
-        merged_construct = {};
+        merged_construct = {}
         merged_construct["product_id_str"] =  g_sentiment_data_arr[i_int]["product_info"]["product_id"]
         merged_construct["review_headline_str"] =  g_sentiment_data_arr[i_int]["product_info"]["review_headline"]
         merged_construct["review_body_str"] =  g_sentiment_data_arr[i_int]["product_info"]["review_body"]
@@ -82,26 +80,26 @@ def create_workable_data_structure(g_tag_data_arr, g_sentiment_data_arr):
             else:
                 print("unique")
                 merged_construct["entity_str_arr"].append(g_tag_data_arr[i_int]["Entities"][j_int]["Type"].lower())
-        final_arr.append(merged_construct);
+        final_arr.append(merged_construct)
     return final_arr
 
 def push_JSON_to_template(g_workable_data_arr):
     html_str = ''
     for i_int in range(len(g_workable_data_arr)):
-        html_str +=     '<div>';
+        html_str +=     '<div>'
         html_str +=         '<span>' + g_workable_data_arr[i_int]["product_id_str"] +'</span>'
         html_str +=         '<h2>' + g_workable_data_arr[i_int]["review_headline_str"] + '</h2>'
         html_str +=         '<h3>' + g_workable_data_arr[i_int]["sentiment_str"] + '</h3>'
         html_str +=         '<h4>' + str(g_workable_data_arr[i_int]["star_rating_float"]) + '</h4>'
         if "entity_str_arr" in g_workable_data_arr[i_int]:
-            html_str +=         '<section>';
+            html_str +=         '<section>'
             for j_int in range(len(g_workable_data_arr[i_int]["entity_str_arr"])):
                 html_str +=             '<span>'
                 html_str +=                 g_workable_data_arr[i_int]["entity_str_arr"][j_int]
                 html_str +=             '</span>'
             html_str +=         '</section>'
         html_str +=         '<p>' + g_workable_data_arr[i_int]["review_body_str"] + '</p>'
-        html_str +=     '</div>'; 
+        html_str +=     '</div>'
     return html_str
 
 

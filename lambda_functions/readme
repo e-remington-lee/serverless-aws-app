@@ -2,7 +2,7 @@ login to aws ecr
 https://docs.aws.amazon.com/AmazonECR/latest/userguide/getting-started-cli.html
 
 create repo
-
+aws ecr create-repository --repository-name publish-code --region us-east-2
 
 run this command to be able to push to aws ecr (on link above):
 replace region

@@ -1,13 +1,17 @@
 import boto3
 import json
 import subprocess
+import os
+
 
 _every_list = []
 _comp = boto3.client('comprehend')
-g_s3 = boto3.client('s3')
+g_s3 = boto3.client('s3', region_name="us-east-2")
+g_bucket_name_str = os.environ['REPORT_BUCKET_NAME']
+
 
 def lambda_handler(event, context):
-    bucket_name_str = get_bucket_name()
+    bucket_name_str = g_bucket_name_str
     S3_BUCKET = 'aws-tc-largeobjects'
     S3_FILE = 'DEV-AWS-MO-Building_2.0/my_json_lines.jsonl'
     all_records_list = s3_selection(S3_BUCKET, S3_FILE)
@@ -16,9 +20,6 @@ def lambda_handler(event, context):
     comprehend_dis(0, 25, len(safe_list), safe_list)
     saveToS3(bucket_name_str)
     return "Done"
-
-def get_bucket_name():
-    return g_s3.list_buckets()["Buckets"][0]["Name"]
     
 def s3_selection(S3_BUCKET, S3_FILE):
     s3 = boto3.client('s3')

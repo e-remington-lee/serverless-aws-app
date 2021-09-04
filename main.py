@@ -1,6 +1,5 @@
 import boto3
 import os
-from packages import add
 
 print(add(1,2))
 # client = boto3.client('s3')

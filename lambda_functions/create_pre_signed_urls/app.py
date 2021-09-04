@@ -18,7 +18,8 @@ def handler(event, context):
     presigned_url_str = get_presigned_url_str()
     print(presigned_url_str)
     message_str = f"Here is your presigned url for your report: {presigned_url_str}"
-    return message_str 
+    response={"message_str": message_str}
+    return response 
 
 # print(s3.list_buckets())
 
