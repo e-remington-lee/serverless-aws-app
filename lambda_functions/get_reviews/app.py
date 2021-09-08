@@ -2,12 +2,12 @@ import boto3
 import json
 import re 
 
+s3 = boto3.client('s3')
+
 def lambda_handler(event, context):
     product_id_str = event['product_id_str']
     S3_BUCKET = 'aws-tc-largeobjects'
     S3_FILE = 'DEV-AWS-MO-Building_2.0/my_json_lines.jsonl'
-
-    s3 = boto3.client('s3')
 
     r = s3.select_object_content(
             Bucket=S3_BUCKET,
